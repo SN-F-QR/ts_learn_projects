@@ -6,19 +6,17 @@ export interface ConsumedHorror {
 	power: number;
 }
 
-interface HorrorSettings {
-	name: string;
-	getPowerFrom: (consumed: ConsumedHorror) => number;
-	isEvil: () => boolean;
-}
-
 export class Horror {
 	readonly name: string;
 	#consumedHorrors: Array<ConsumedHorror> = [];
 	protected getPowerFrom: (oppoent: ConsumedHorror) => number;
 	readonly isEvil: () => boolean;
 
-	public constructor({ name, getPowerFrom, isEvil }: HorrorSettings) {
+	public constructor(
+		name: string,
+		getPowerFrom: (x: ConsumedHorror) => number,
+		isEvil: () => boolean
+	) {
 		this.name = name;
 		this.getPowerFrom = getPowerFrom;
 		this.isEvil = isEvil;
@@ -46,25 +44,19 @@ export class Horror {
 	}
 }
 
-const demonSettings: HorrorSettings = {
-	name: "Demon",
-	getPowerFrom: (consumed: ConsumedHorror) => {
-		return consumed.evil ? consumed.power / 2 : consumed.power * 2;
-	},
-	isEvil: () => true,
-};
-
 export function createDemon(): Horror {
-	return new Horror(demonSettings);
+	const demonGetPower = function (x: ConsumedHorror): number {
+		return x.evil ? x.power / 2 : x.power * 2;
+	};
+	return new Horror("Demon", demonGetPower, () => true);
 }
 
 export function createSorcerer(name: string, evil: boolean): Horror {
-	const sorcererSettings: HorrorSettings = {
-		name: name,
-		getPowerFrom: (consumed: ConsumedHorror) => {
-			return consumed.evil === evil ? consumed.power * 2 : consumed.power;
+	return new Horror(
+		name,
+		(x: ConsumedHorror): number => {
+			return x.evil === evil ? x.power * 2 : x.power;
 		},
-		isEvil: () => evil,
-	};
-	return new Horror(sorcererSettings);
+		() => evil
+	);
 }
