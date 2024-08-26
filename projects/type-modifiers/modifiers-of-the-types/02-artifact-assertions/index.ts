@@ -21,3 +21,14 @@ const artifacts = {
 		type: "sword",
 	},
 };
+
+export type ArtifactName =
+	| "Black Garnet"
+	| "Castle TypeScript"
+	| "Cosmic Key"
+	| "Starseed"
+	| "Sword of the Ancients";
+
+export function getArtifactType(name: ArtifactName): string {
+	return artifacts[name].type;
+}

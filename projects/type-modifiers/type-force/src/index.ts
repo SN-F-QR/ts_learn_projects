@@ -2,30 +2,39 @@
 // You'll need to export duel so the tests can run it.
 
 const mutationsLibrary = {
-	energy: (hero) => {
+	energy: (hero: Character) => {
 		hero.power *= 1.25;
 		hero.flying = true;
 	},
-	healing: (hero) => {
+	healing: (hero: Character) => {
 		hero.toughness *= 2;
 	},
-	luck: (hero) => {
+	luck: (hero: Character) => {
 		hero.power *= 1.25;
 		hero.toughness *= 1.25;
 	},
-	flight: (hero) => {
+	flight: (hero: Character) => {
 		hero.flying = true;
 	},
-	strength: (hero) => {
+	strength: (hero: Character) => {
 		hero.power *= 2;
 	},
-	wings: (hero) => {
+	wings: (hero: Character) => {
 		hero.flying = true;
 		hero.toughness *= 0.9;
 	},
 };
 
-function createCharacter(name, mutations) {
+export type Mutation = keyof typeof mutationsLibrary;
+
+export interface Character {
+	flying: boolean;
+	name: string;
+	power: number;
+	toughness: number;
+}
+
+function createCharacter(name: string, mutations: Array<string>) {
 	const character = {
 		flying: false,
 		name,
@@ -34,8 +43,27 @@ function createCharacter(name, mutations) {
 	};
 
 	for (const mutation of mutations) {
-		mutationsLibrary[mutation](character);
+		mutationsLibrary[mutation as Mutation](character);
 	}
 
 	return character;
+}
+
+export interface CharacterSetting {
+	name: string;
+	mutations: Array<string>;
+}
+
+export function duel(good: CharacterSetting, bad: CharacterSetting) {
+	const goodCharacter: Character = createCharacter(good.name, good.mutations);
+	const badCharacter: Character = createCharacter(bad.name, bad.mutations);
+	const truePower = (x: Character, y: Character) => x.power / y.toughness;
+	if (
+		truePower(goodCharacter, badCharacter) >=
+		truePower(badCharacter, goodCharacter)
+	) {
+		return ["hero", goodCharacter];
+	} else {
+		return ["villain", badCharacter];
+	}
 }
