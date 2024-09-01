@@ -1,4 +1,9 @@
 {
 	// Write your configuration options here! ✨
-	"include": ["."]
+	"compilerOptions": {
+		"outDir": "./dist",
+		"allowJs": true,
+		"resolveJsonModule": true,
+		"esModuleInterop": true
+	}
 }

@@ -7,3 +7,4 @@ expectTypeExtends<["b", "b"], SplitOn<"bab", "a">>();
 expectTypeExtends<["bb", "", "bb"], SplitOn<"bbaabb", "a">>();
 expectTypeExtends<["bb", "bb"], SplitOn<"bbaabb", "aa">>();
 expectTypeExtends<["", "b", "b", ""], SplitOn<"ababa", "a">>();
+expectTypeExtends<["", "b", "b", "c"], SplitOn<"ababac", "a">>();

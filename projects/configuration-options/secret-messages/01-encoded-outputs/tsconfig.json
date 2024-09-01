@@ -1,4 +1,13 @@
 {
 	// Write your configuration options here! ✨
-	"include": ["."]
+	"compilerOptions": {
+		"target": "es2021",
+		"module": "commonjs",
+		"outDir": ".",
+		"sourceMap": true,
+		"declaration": true,
+		"declarationMap": true
+	},
+	"include": ["./*.ts"],
+	"exclude": ["./*.verify.ts"]
 }
